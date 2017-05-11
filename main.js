@@ -10,7 +10,7 @@ $(document).ready(function() {
 				var span = '<span>'+ letter[j] +'</span>';
 				$(parent).append(span);
 			}
-			var span = '<span> </span>';
+			var span = '<span class="space"></span>';
 			$(parent).append(span);
 		} else {
 			var br = "<br>";
@@ -18,16 +18,24 @@ $(document).ready(function() {
 		}
 	}
 
-	$(".wrapper").mouseover(function(event){
-		$("span" ).each(function( index ) {
-			TweenLite.to($(this), 1, {left: getRandom(-100, 100), top: getRandom(-100, 100), rotation:getRandom(-360, 360), opacity: getRandom(1, 0.1)});
-		});
+	var span = $(parent).find('span');
+
+	$(".wrapper").hover(function(event){
+		var y = [];
+		var x = [];
+		var scale = [];
+		var rotation =[];
+		for (var i = 0; i < span.length; i++) {
+			x[i] = getRandom(-150,150);
+			y[i] = getRandom(-150,150);
+			scale[i] = getRandom(0.5,3);
+			rotation[i] = getRandom(-320,320) + 'deg';
+		}
+		TweenMax.staggerTo(span, 0.8, { cycle: { x: x, y: y, scale: scale, rotation: rotation }, ease: Bounce.easeOut }, 0);
 	});
 
 	$(".wrapper").mouseleave(function(event){
-		$("span" ).each(function( index ) {
-			TweenLite.to($(this), 1, {left: 0, top: 0, rotation:0, opacity:1});
-		});
+		TweenMax.staggerTo(span, 1, { cycle: { x: [0], y: [0], scale: [1], rotation: [0] }, ease: Power4.easeOut }, 0);
 	});
 
 	function getRandom(min, max) {
